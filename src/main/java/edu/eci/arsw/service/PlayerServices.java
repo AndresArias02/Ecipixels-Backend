@@ -16,9 +16,12 @@ import java.util.Optional;
 public class PlayerServices {
 
 
-    @Autowired
-    PlayerRepository playerRepository;
+    private final PlayerRepository playerRepository;
 
+    @Autowired
+    public PlayerServices(PlayerRepository playerRepository){
+        this.playerRepository = playerRepository;
+    }
     @Cacheable(RedisConfig.CACHENAME)
     public void addPlayer(Player player) {
         playerRepository.save(player);

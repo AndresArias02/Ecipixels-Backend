@@ -14,7 +14,6 @@ public class BoardServices {
     @Autowired
     public BoardServices(RedisTemplate<String, Object> redisTemplate){
         this.redisTemplate = redisTemplate;
-
     }
 
     public void saveBoardGrid() {
