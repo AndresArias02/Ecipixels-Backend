@@ -3,7 +3,6 @@ package edu.eci.arsw.controller;
 import edu.eci.arsw.model.*;
 import edu.eci.arsw.service.BoardServices;
 import edu.eci.arsw.service.GameServices;
-import edu.eci.arsw.service.PlayerServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

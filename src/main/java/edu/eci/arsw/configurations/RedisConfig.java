@@ -1,7 +1,6 @@
-package edu.eci.arsw.Configurations;
+package edu.eci.arsw.configurations;
 
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cache.concurrent.ConcurrentMapCacheManager;
@@ -12,18 +11,16 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
-import javax.annotation.PostConstruct;
-
 
 @Configuration
 @EnableCaching
 public class RedisConfig {
 
-    public static final String cacheName = "eciPixelsCache";
+    public static final String CACHENAME = "eciPixelsCache";
 
     @Bean
     public CacheManager cacheManager(){
-        return new ConcurrentMapCacheManager(cacheName);
+        return new ConcurrentMapCacheManager(CACHENAME);
     }
 
     @Bean

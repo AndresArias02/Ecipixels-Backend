@@ -1,4 +1,4 @@
-package edu.eci.arsw.Configurations;
+package edu.eci.arsw.configurations;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;

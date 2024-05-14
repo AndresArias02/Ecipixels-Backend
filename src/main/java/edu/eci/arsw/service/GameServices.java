@@ -1,16 +1,14 @@
 package edu.eci.arsw.service;
 
 
-import edu.eci.arsw.Configurations.RedisConfig;
+import edu.eci.arsw.configurations.RedisConfig;
 import edu.eci.arsw.model.Game;
 import edu.eci.arsw.model.Player;
 import edu.eci.arsw.repository.GameRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,14 +30,14 @@ public class GameServices {
     }
 
 
-    @Cacheable(RedisConfig.cacheName)
+    @Cacheable(RedisConfig.CACHENAME)
     public void createNewGame() {
         Game game = new Game();
         gameRepository.save(game);
         this.boardServices.saveBoardGrid();
     }
 
-    @Cacheable(RedisConfig.cacheName)
+    @Cacheable(RedisConfig.CACHENAME)
     public void updateGame(Game game){
         gameRepository.save(game);
     }
@@ -53,7 +51,7 @@ public class GameServices {
         boardServices.updatePixelBoardGrid(key,value);
     }
 
-    @Cacheable(RedisConfig.cacheName)
+    @Cacheable(RedisConfig.CACHENAME)
     public Game getGame(){
         Game game = null;
         Optional<Game> optionalGame = gameRepository.findById("game");

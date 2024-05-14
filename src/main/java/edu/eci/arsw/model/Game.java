@@ -5,13 +5,8 @@ package edu.eci.arsw.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import edu.eci.arsw.service.GameServices;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisHash;
-import org.springframework.stereotype.Component;
-
 import javax.persistence.Id;
-import javax.persistence.Transient;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -28,8 +23,7 @@ public class Game implements Serializable {
     private List<String> usedColors;
     @JsonIgnore
 
-    private GameServices gameServices;
-
+    private transient GameServices gameServices;
     public Game(){
         this.id ="game";
         this.players= new ArrayList<>();

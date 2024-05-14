@@ -1,6 +1,8 @@
 package edu.eci.arsw.model;
 
-public class Head {
+import java.io.Serializable;
+
+public class Head implements Serializable {
 
      private int row;
      private int col;
