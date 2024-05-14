@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Mapa de Cuadros</title>
+    <style>
+        canvas {
+            border: 1px solid black;
+        }
+    </style>
+</head>
+<body style="margin: 0">
+<canvas id="lienzo" width="800" height="800"></canvas>
+<script>
+    var canvas, context;
+    var vertical = 40, horizontal = 40;
+    var gw = 800 / horizontal;
+    var gh = 800 / vertical;
+    var posicion = {x: 0, y: 0};
+    var cuadros = [];
+    var index = 0;
+    var direccion = {x: 0, y: 0};
+    var intervalId;
+    var pausado = false;
+
+    window.onload = function() {
+        canvas = document.getElementById('lienzo');
+        context = canvas.getContext('2d');
+
+        for (var i = 0; i < vertical; i++) {
+            cuadros[i] = [];
+            for (var j = 0; j < horizontal; j++) {
+                cuadros[i][j] = {color: "white", index: index};
+                index++;
+            }
+        }
+
+        document.onkeydown = function(event) {
+            switch (event.keyCode) {
+                case 37:
+                    direccion.x = -1;
+                    direccion.y = 0;
+                    break;
+                case 38:
+                    direccion.x = 0;
+                    direccion.y = -1;
+                    break;
+                case 39:
+                    direccion.x = 1;
+                    direccion.y = 0;
+                    break;
+                case 40:
+                    direccion.x = 0;
+                    direccion.y = 1;
+                    break;
+                case 80: // "p" key
+                    pausado = !pausado;
+                    if (pausado) {
+                        clearInterval(intervalId);
+                    } else {
+                        intervalId = setInterval(function() {
+                            posicion.x += direccion.x;
+                            posicion.y += direccion.y;
+                            if (posicion.x < 0) posicion.x = 0;
+                            if (posicion.y < 0) posicion.y = 0;
+                            if (posicion.x >= horizontal) posicion.x = horizontal - 1;
+                            if (posicion.y >= vertical) posicion.y = vertical -                             1;
+                            fillBackground();
+                            drawSquare(posicion.x, posicion.y, "blue");
+                            drawIndex(posicion.x, posicion.y);
+                        }, 100);
+                    }
+                    break;
+            }
+            if (!pausado && !intervalId) {
+                intervalId = setInterval(function() {
+                    posicion.x += direccion.x;
+                    posicion.y += direccion.y;
+                    if (posicion.x < 0) posicion.x = 0;
+                    if (posicion.y < 0) posicion.y = 0;
+                    if (posicion.x >= horizontal) posicion.x = horizontal - 1;
+                    if (posicion.y >= vertical) posicion.y = vertical - 1;
+                    fillBackground();
+                    drawSquare(posicion.x, posicion.y, "blue");
+                    drawIndex(posicion.x, posicion.y);
+                }, 100);
+            }
+        }
+
+        document.onkeyup = function(event) {
+            switch (event.keyCode) {
+                case 37:
+                case 38:
+                case 39:
+                case 40:
+                    clearInterval(intervalId);
+                    intervalId = null;
+                    break;
+            }
+        }
+
+        fillBackground();
+    }
+
+    function drawSquare(x, y, color) {
+        var cuadro = cuadros[y][x];
+        cuadro.color = color;
+        context.fillStyle = cuadro.color;
+        var rx = x * gw;
+        var ry = y * gh;
+        context.fillRect(rx, ry, gw, gh);
+        context.strokeStyle = "black";
+        context.strokeRect(rx, ry, gw, gh);
+    }
+
+    function fillBackground() {
+        context.fillStyle = '#000';
+        context.fillRect(0, 0, 400, 400);
+        for (var i = 0; i < vertical; i++) {
+            for (var j = 0; j < horizontal; j++) {
+                var cuadro = cuadros[i][j];
+                context.fillStyle = cuadro.color;
+                var rx = j * gw;
+                var ry = i * gh;
+                context.fillRect(rx, ry, gw, gh);
+                context.strokeStyle = "black";
+                context.strokeRect(rx, ry, gw, gh);
+            }
+        }
+    }
+
+    function drawIndex(x, y) {
+        context.fillStyle = "black";
+        context.font = "12px Arial";
+        context.fillText("Fila: " + y, 5, 15 + y * gh);
+        context.fillText("Columna: " + x, 5, 28 + x * gw);
+    }
+</script>
+</body>
+</html>

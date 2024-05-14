@@ -1,0 +1,14 @@
+/Volumes/ANDRESFAA/universidad/Octavo Semestre/ARSW/Proyecto/EciPixels/Ecipixels-Backend/src/main/java/edu/eci/arsw/model/Power.java
+/Volumes/ANDRESFAA/universidad/Octavo Semestre/ARSW/Proyecto/EciPixels/Ecipixels-Backend/src/main/java/edu/eci/arsw/controller/GameController.java
+/Volumes/ANDRESFAA/universidad/Octavo Semestre/ARSW/Proyecto/EciPixels/Ecipixels-Backend/src/main/java/edu/eci/arsw/model/Game.java
+/Volumes/ANDRESFAA/universidad/Octavo Semestre/ARSW/Proyecto/EciPixels/Ecipixels-Backend/src/main/java/edu/eci/arsw/EciPixelsApplication.java
+/Volumes/ANDRESFAA/universidad/Octavo Semestre/ARSW/Proyecto/EciPixels/Ecipixels-Backend/src/main/java/edu/eci/arsw/service/BoardServices.java
+/Volumes/ANDRESFAA/universidad/Octavo Semestre/ARSW/Proyecto/EciPixels/Ecipixels-Backend/src/main/java/edu/eci/arsw/model/LeaderBoard.java
+/Volumes/ANDRESFAA/universidad/Octavo Semestre/ARSW/Proyecto/EciPixels/Ecipixels-Backend/src/main/java/edu/eci/arsw/model/Player.java
+/Volumes/ANDRESFAA/universidad/Octavo Semestre/ARSW/Proyecto/EciPixels/Ecipixels-Backend/src/main/java/edu/eci/arsw/repository/PlayerRepository.java
+/Volumes/ANDRESFAA/universidad/Octavo Semestre/ARSW/Proyecto/EciPixels/Ecipixels-Backend/src/main/java/edu/eci/arsw/model/Head.java
+/Volumes/ANDRESFAA/universidad/Octavo Semestre/ARSW/Proyecto/EciPixels/Ecipixels-Backend/src/main/java/edu/eci/arsw/controller/PlayerController.java
+/Volumes/ANDRESFAA/universidad/Octavo Semestre/ARSW/Proyecto/EciPixels/Ecipixels-Backend/src/main/java/edu/eci/arsw/repository/GameRepository.java
+/Volumes/ANDRESFAA/universidad/Octavo Semestre/ARSW/Proyecto/EciPixels/Ecipixels-Backend/src/main/java/edu/eci/arsw/service/PlayerServices.java
+/Volumes/ANDRESFAA/universidad/Octavo Semestre/ARSW/Proyecto/EciPixels/Ecipixels-Backend/src/main/java/edu/eci/arsw/service/GameServices.java
+/Volumes/ANDRESFAA/universidad/Octavo Semestre/ARSW/Proyecto/EciPixels/Ecipixels-Backend/src/main/java/edu/eci/arsw/Configurations/RedisConfig.java
