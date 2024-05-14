@@ -20,7 +20,7 @@ public class Player implements Serializable{
     private boolean isAlive = true;
     @Transient
     @JsonIgnore
-    private GameServices gameServices;
+    private transient GameServices gameServices;
 
 
     public Player(String name){
@@ -114,10 +114,8 @@ public class Player implements Serializable{
         List<Player>  players = gameServices.getPlayers();
         List<Player> playersToRemove = new ArrayList<>();
         for(Player p: players){
-           if(!p.equals(this)){
-               if(p.getPixelsRoute() != null && p.getPixelsRoute().contains(pixel)){
-                   playersToRemove.add(p);
-               }
+           if(!p.equals(this) && p.getPixelsRoute() != null && p.getPixelsRoute().contains(pixel)){
+               playersToRemove.add(p);
            }
         }
         for(Player p: playersToRemove){
@@ -155,9 +153,9 @@ public class Player implements Serializable{
 
     }
 
-    private void calcArea(Game game){
-
-       Integer[][] grid = gameServices.getBoard();
+    private void calcArea(Game game) {
+        Integer[][] grid = gameServices.getBoard();
+        int id = this.id; // Cache this.id to avoid repeated field access
 
         // Calculate mins and maxs
         int minRow = Integer.MAX_VALUE;
@@ -165,10 +163,10 @@ public class Player implements Serializable{
         int maxRow = 0;
         int maxCol = 0;
 
-        // Calcula mínimos y máximos de fila y columna
-        for (int i = 1; i < grid.length-1; i++) {
-            for (int j = 1; j < grid[i].length-1; j++) {
-                if (grid[i][j].equals(this.id)) {
+        // Calculate minimum and maximum rows and columns
+        for (int i = 1; i < grid.length - 1; i++) {
+            for (int j = 1; j < grid[i].length - 1; j++) {
+                if (grid[i][j].equals(id)) {
                     minRow = Math.min(minRow, i);
                     minCol = Math.min(minCol, j);
                     maxRow = Math.max(maxRow, i);
@@ -180,52 +178,55 @@ public class Player implements Serializable{
         // Iterate over the area
         for (int r = minRow; r <= maxRow; r++) {
             for (int c = minCol; c <= maxCol; c++) {
-                // Se analizan solo las celdas de color diferente al buscado
-                if (!grid[r][c].equals(this.id)) {
-                    // Cuenta el número de límites del findClr de la celda evaluada
+                if (!grid[r][c].equals(id)) {
+                    // Count the number of borders of the target color around the cell
                     int paso = 0;
-                    // Right
+
+                    // Check right
                     for (int c1 = c + 1; c1 <= maxCol; c1++) {
-                        if (grid[r][c1].equals(this.id)) {
-                            // Encontró un límite por derecha
+                        if (grid[r][c1].equals(id)) {
                             paso++;
                             break;
                         }
                     }
-                    // Left
+
+                    // Check left
                     for (int c1 = c - 1; c1 >= minCol; c1--) {
-                        if (grid[r][c1].equals(this.id)) {
+                        if (grid[r][c1].equals(id)) {
                             paso++;
                             break;
                         }
                     }
-                    // Down
+
+                    // Check down
                     for (int r1 = r + 1; r1 <= maxRow; r1++) {
-                        if (grid[r1][c].equals(this.id)) {
+                        if (grid[r1][c].equals(id)) {
                             paso++;
                             break;
                         }
                     }
-                    // Up
+
+                    // Check up
                     for (int r1 = r - 1; r1 >= minRow; r1--) {
-                        if (grid[r1][c].equals(this.id)) {
+                        if (grid[r1][c].equals(id)) {
                             paso++;
                             break;
                         }
                     }
-                    // Si se encuentran los 4 límites se pinta del color
+
+                    // If all four borders are found, paint the cell
                     if (paso == 4) {
                         String pixel = r + "," + c;
-                        Integer value = game.getPixel(r,c);
-                        checkIfPixelBelongsToSomeone(value,pixel,game);
+                        Integer value = game.getPixel(r, c);
+                        checkIfPixelBelongsToSomeone(value, pixel, game);
                         pixelsOwned.add(pixel);
-                        gameServices.updatePixelBoardGrid(pixel,this.id);
-                        paso = 0;
+                        gameServices.updatePixelBoardGrid(pixel, id);
                     }
                 }
             }
         }
     }
+
 
     public void setHead(Head head) {
         this.head = head;

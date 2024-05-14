@@ -50,15 +50,15 @@ public class BoardServices {
             for (int j = 0; j < grid[i].length; j++) {
                 String key = i + "," + j;
                 Object value = redisTemplate.opsForHash().get(nameBoard, key);
-                if (value instanceof String) {
-                    String stringValue = (String) value;
+                if (value instanceof String string) {
+                    String stringValue = string;
                     if (!stringValue.equals("null")) {
                         grid[i][j] = Integer.parseInt(stringValue);
                     } else {
                         grid[i][j] = null;
                     }
-                } else if (value instanceof Integer) {
-                    grid[i][j] = (Integer) value;
+                } else if (value instanceof Integer integer) {
+                    grid[i][j] = integer;
                 } else {
                     grid[i][j] = null;
                 }
@@ -71,10 +71,10 @@ public class BoardServices {
     public Integer getPixelBoard(String positionValue) {
         Integer realdValue=  null;
         Object value = redisTemplate.opsForHash().get(nameBoard, positionValue);
-        if(value instanceof Integer){
-            realdValue = (Integer) value;
-        } else if (value instanceof String) {
-            realdValue = Integer.parseInt((String) value);
+        if(value instanceof Integer integer){
+            realdValue = integer;
+        } else if (value instanceof String string) {
+            realdValue = Integer.parseInt(string);
         }
         return realdValue;
     }
