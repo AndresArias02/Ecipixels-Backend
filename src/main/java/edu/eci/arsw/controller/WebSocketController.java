@@ -16,8 +16,12 @@ import java.util.List;
 @Controller
 public class WebSocketController {
 
+    private final GameServices gameServices;
+
     @Autowired
-    GameServices gameServices;
+    public WebSocketController(GameServices gameServices){
+        this.gameServices = gameServices;
+    }
 
     @MessageMapping("/gameState")
     @SendTo("/topic/GameState")

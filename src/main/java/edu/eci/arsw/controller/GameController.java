@@ -17,11 +17,14 @@ import java.util.logging.Logger;
 @CrossOrigin(origins = "http://localhost:4200")
 public class GameController {
 
-    @Autowired
-    private GameServices gameServices;
+    private final GameServices gameServices;
+    private final BoardServices boardServices;
 
     @Autowired
-    private BoardServices boardServices;
+    public GameController(GameServices gameServices, BoardServices boardServices){
+        this.gameServices = gameServices;
+        this.boardServices = boardServices;
+    }
 
     @RequestMapping(value = "/board",method = RequestMethod.GET)
     public ResponseEntity<?> getBoard(){
