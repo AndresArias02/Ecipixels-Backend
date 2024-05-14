@@ -9,9 +9,13 @@ import java.util.List;
 @Service
 public class BoardServices {
 
-    @Autowired
-    private RedisTemplate<String, Object> redisTemplate;
+    private final RedisTemplate<String, Object> redisTemplate;
 
+    @Autowired
+    public BoardServices(RedisTemplate<String, Object> redisTemplate){
+        this.redisTemplate = redisTemplate;
+
+    }
 
     public void saveBoardGrid() {
         String tableName = "board_Grid";

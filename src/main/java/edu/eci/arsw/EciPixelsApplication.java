@@ -14,9 +14,13 @@ import javax.annotation.PostConstruct;
 @ComponentScan(basePackages = {"edu.eci.arsw"})
 public class EciPixelsApplication {
 
-	@Autowired
-	private GameServices gameServices;
 
+	private final GameServices gameServices;
+
+	@Autowired
+	public EciPixelsApplication(GameServices gameServices){
+		this.gameServices = gameServices;
+	}
 
 	public static void main(String[] args) {
 		SpringApplication.run(EciPixelsApplication.class, args);
