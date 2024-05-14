@@ -22,7 +22,6 @@ public class Game implements Serializable {
     private String[] colors;
     private List<String> usedColors;
     @JsonIgnore
-
     private transient GameServices gameServices;
     public Game(){
         this.id ="game";
@@ -57,8 +56,7 @@ public class Game implements Serializable {
 
     public Integer getPixel(int x, int y){
         String positionValue = x +","+ y;
-        Integer value = gameServices.getPixelBoard(positionValue);
-        return value;
+        return gameServices.getPixelBoard(positionValue);
     }
 
     public void updatePlayer(Player player){

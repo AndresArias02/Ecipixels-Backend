@@ -15,14 +15,18 @@ import java.util.Optional;
 @Service
 public class GameServices {
 
+    private final PlayerServices playerServices;
+
+    @Autowired
+    private  GameRepository gameRepository;
+
     @Autowired
     private BoardServices boardServices;
 
     @Autowired
-    private PlayerServices playerServices;
-
-    @Autowired(required = true)
-    private GameRepository gameRepository;
+    public GameServices(PlayerServices playerServices){
+        this.playerServices = playerServices;
+    }
 
 
     public void setNewPlayer(Game game, Player player){

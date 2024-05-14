@@ -271,7 +271,7 @@ public class Player implements Serializable{
         return gainedArea;
     }
 
-    public void setGainedArea(int gainedArea) {
+    public synchronized void setGainedArea(int gainedArea) {
         this.gainedArea = gainedArea;
     }
 

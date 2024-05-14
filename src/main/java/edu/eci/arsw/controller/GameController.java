@@ -26,58 +26,59 @@ public class GameController {
         this.boardServices = boardServices;
     }
 
-    @RequestMapping(value = "/board",method = RequestMethod.GET)
-    public ResponseEntity<?> getBoard(){
+    @GetMapping(value = "/board")
+    public ResponseEntity<Integer[][]> getBoard(){
         try{
             Integer[][] board  = boardServices.getBoard();
-            return new ResponseEntity<>(board,HttpStatus.ACCEPTED);
-        }catch (Exception ex){
-            Logger.getLogger(GameController.class.getName()).log(Level.SEVERE,null,ex);
-            return new ResponseEntity<>("Error" + ex.getMessage(),HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(board, HttpStatus.ACCEPTED);
+        } catch (Exception ex){
+            Logger.getLogger(GameController.class.getName()).log(Level.SEVERE, null, ex);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
-    @RequestMapping(value = "/players",method = RequestMethod.GET)
-    public ResponseEntity<?> getPlayers(){
+    @GetMapping(value = "/players")
+    public ResponseEntity<List<Player>> getPlayers(){
         try{
             List<Player> players = gameServices.getGame().getPlayers();
             for(Player p: players){
                 gameServices.updatePlayer(p);
             }
-            return new ResponseEntity<>(gameServices.getPlayers(),HttpStatus.ACCEPTED);
-        }catch (Exception ex){
-            Logger.getLogger(GameController.class.getName()).log(Level.SEVERE,null,ex);
-            return new ResponseEntity<>("Error" + ex.getMessage(),HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(gameServices.getPlayers(), HttpStatus.ACCEPTED);
+        } catch (Exception ex){
+            Logger.getLogger(GameController.class.getName()).log(Level.SEVERE, null, ex);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
-    @RequestMapping(value = "/addPlayer",method = RequestMethod.POST)
-    public ResponseEntity<?> addPlayer(@RequestBody String name) {
-        if (name == null) {
+    @PostMapping(value = "/addPlayer")
+    public ResponseEntity<Player> addPlayer(@RequestBody String name) {
+        if (name == null || name.trim().isEmpty()) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         try{
             Player player = new Player(name);
             gameServices.addNewPlayer(player);
-            return new ResponseEntity<>(player,HttpStatus.CREATED);
-        }catch (Exception ex){
-            Logger.getLogger(GameController.class.getName()).log(Level.SEVERE,null,ex);
-            return new ResponseEntity<>("Error" + ex.getMessage(),HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>(player, HttpStatus.CREATED);
+        } catch (Exception ex){
+            Logger.getLogger(GameController.class.getName()).log(Level.SEVERE, null, ex);
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
     }
 
-    @RequestMapping(value = "/deletePlayer/{playerId}",method = RequestMethod.DELETE)
-    public ResponseEntity<?> deletePlayer(@PathVariable String playerId) {
+    @DeleteMapping(value = "/deletePlayer/{playerId}")
+    public ResponseEntity<Void> deletePlayer(@PathVariable String playerId) {
         Player player = gameServices.getPlayer(playerId);
         if (player == null) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         try{
             gameServices.deletePlayer(player);
             return new ResponseEntity<>(HttpStatus.OK);
-        }catch (Exception ex){
-            Logger.getLogger(GameController.class.getName()).log(Level.SEVERE,null,ex);
-            return new ResponseEntity<>("Error" + ex.getMessage(),HttpStatus.FORBIDDEN);
+        } catch (Exception ex){
+            Logger.getLogger(GameController.class.getName()).log(Level.SEVERE, null, ex);
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
     }
+
 }
