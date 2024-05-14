@@ -155,7 +155,6 @@ public class Player implements Serializable{
 
     private void calcArea(Game game) {
         Integer[][] grid = gameServices.getBoard();
-        int id = this.id; // Cache this.id to avoid repeated field access
 
         // Calculate mins and maxs
         int minRow = Integer.MAX_VALUE;
@@ -166,7 +165,7 @@ public class Player implements Serializable{
         // Calculate minimum and maximum rows and columns
         for (int i = 1; i < grid.length - 1; i++) {
             for (int j = 1; j < grid[i].length - 1; j++) {
-                if (grid[i][j].equals(id)) {
+                if (grid[i][j].equals(this.id)) {
                     minRow = Math.min(minRow, i);
                     minCol = Math.min(minCol, j);
                     maxRow = Math.max(maxRow, i);
@@ -184,7 +183,7 @@ public class Player implements Serializable{
 
                     // Check right
                     for (int c1 = c + 1; c1 <= maxCol; c1++) {
-                        if (grid[r][c1].equals(id)) {
+                        if (grid[r][c1].equals(this.id)) {
                             paso++;
                             break;
                         }
@@ -192,7 +191,7 @@ public class Player implements Serializable{
 
                     // Check left
                     for (int c1 = c - 1; c1 >= minCol; c1--) {
-                        if (grid[r][c1].equals(id)) {
+                        if (grid[r][c1].equals(this.id)) {
                             paso++;
                             break;
                         }
@@ -200,7 +199,7 @@ public class Player implements Serializable{
 
                     // Check down
                     for (int r1 = r + 1; r1 <= maxRow; r1++) {
-                        if (grid[r1][c].equals(id)) {
+                        if (grid[r1][c].equals(this.id)) {
                             paso++;
                             break;
                         }
@@ -208,7 +207,7 @@ public class Player implements Serializable{
 
                     // Check up
                     for (int r1 = r - 1; r1 >= minRow; r1--) {
-                        if (grid[r1][c].equals(id)) {
+                        if (grid[r1][c].equals(this.id)) {
                             paso++;
                             break;
                         }
@@ -220,7 +219,7 @@ public class Player implements Serializable{
                         Integer value = game.getPixel(r, c);
                         checkIfPixelBelongsToSomeone(value, pixel, game);
                         pixelsOwned.add(pixel);
-                        gameServices.updatePixelBoardGrid(pixel, id);
+                        gameServices.updatePixelBoardGrid(pixel,this.id);
                     }
                 }
             }
