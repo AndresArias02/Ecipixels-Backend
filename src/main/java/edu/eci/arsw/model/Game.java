@@ -8,6 +8,7 @@ import edu.eci.arsw.service.GameServices;
 import org.springframework.data.redis.core.RedisHash;
 import javax.persistence.Id;
 import java.io.Serializable;
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -94,7 +95,7 @@ public class Game implements Serializable {
     }
 
     private String chooseRandomColor() {
-        Random random = new Random();
+        SecureRandom random = new SecureRandom();
         int index = random.nextInt(colors.length);
         String color = colors[index];
         if (usedColors.contains(color)) {
@@ -106,7 +107,7 @@ public class Game implements Serializable {
     }
 
     private void placeRandomPlayer(Player player) {
-        Random random = new Random();
+        SecureRandom random = new SecureRandom();
         boolean playerPlaced = false;
         Integer[][] grid = gameServices.getBoard();
 
