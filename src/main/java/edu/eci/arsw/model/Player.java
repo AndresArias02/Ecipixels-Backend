@@ -247,6 +247,10 @@ public class Player implements Serializable{
         return this.id;
     }
 
+    public void setPlayerId(Integer id){
+        this.id = id;
+    }
+
     public void setColor(String color) {
         this.color = color;
     }

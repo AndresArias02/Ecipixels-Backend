@@ -34,13 +34,13 @@ public class BoardServices {
     }
 
 
-    public void updateBoard(List<String> keys, Integer value){
+    public synchronized void updateBoard(List<String> keys, Integer value){
         for(String key : keys){
             redisTemplate.opsForHash().put(nameBoard,key,String.valueOf(value));
         }
     }
 
-    public void updatePixelBoardGrid(String key, Integer value){
+    public synchronized void updatePixelBoardGrid(String key, Integer value){
         redisTemplate.opsForHash().put(nameBoard,key,value);
     }
 
