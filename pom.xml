@@ -65,6 +65,7 @@
     </dependencies>
     <build>
         <plugins>
+            <!-- Plugin de JaCoCo para la generación de informes de cobertura de código -->
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
@@ -72,20 +73,31 @@
                 <executions>
                     <!-- Configuración del plugin para preparar el agente de JaCoCo antes de las pruebas -->
                     <execution>
+                        <id>prepare-agent</id>
                         <goals>
                             <goal>prepare-agent</goal>
                         </goals>
-                        <phase>test</phase>
+                        <phase>initialize</phase>
                     </execution>
                     <!-- Configuración del plugin para generar informes de cobertura -->
                     <execution>
                         <id>report</id>
-                        <phase>test</phase>
+                        <phase>prepare-package</phase>
                         <goals>
                             <goal>report</goal>
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+            <!-- Plugin de Maven Surefire para ejecutar las pruebas -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.0.0-M5</version> <!-- Versión actualizada de Surefire -->
+                <configuration>
+                    <!-- Configuración para incluir la generación de informes de cobertura durante las pruebas -->
+                    <argLine>-javaagent:${settings.localRepository}/org/jacoco/org.jacoco.agent/0.8.7/jacoco-agent-0.8.7-runtime.jar=destfile=${project.build.directory}/jacoco.exec</argLine>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
