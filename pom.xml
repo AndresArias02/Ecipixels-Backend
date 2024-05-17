@@ -53,6 +53,11 @@
             <scope>runtime</scope>
         </dependency>
         <dependency>
+            <groupId>jakarta.persistence</groupId>
+            <artifactId>jakarta.persistence-api</artifactId>
+            <version>3.0.0</version> <!-- Versión actualizada de Jakarta Persistence API -->
+        </dependency>
+        <dependency>
             <groupId>org.testng</groupId>
             <artifactId>testng</artifactId>
             <version>7.8.0</version>
@@ -88,16 +93,6 @@
                         </goals>
                     </execution>
                 </executions>
-            </plugin>
-            <!-- Plugin de Maven Surefire para ejecutar las pruebas -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.0.0-M5</version> <!-- Versión actualizada de Surefire -->
-                <configuration>
-                    <!-- Configuración para incluir la generación de informes de cobertura durante las pruebas -->
-                    <argLine>-javaagent:${settings.localRepository}/org/jacoco/org.jacoco.agent/0.8.7/jacoco-agent-0.8.7-runtime.jar=destfile=${project.build.directory}/jacoco.exec</argLine>
-                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.springframework.boot</groupId>

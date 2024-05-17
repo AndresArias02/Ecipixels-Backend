@@ -5,8 +5,8 @@ package edu.eci.arsw.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import edu.eci.arsw.service.GameServices;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.redis.core.RedisHash;
-import javax.persistence.Id;
 import java.io.Serializable;
 import java.security.SecureRandom;
 import java.util.ArrayList;
