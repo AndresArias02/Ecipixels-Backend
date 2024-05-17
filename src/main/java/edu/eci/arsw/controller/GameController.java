@@ -56,6 +56,9 @@ public class GameController {
         if (name == null || name.trim().isEmpty()) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
+        if(gameServices.getGame().getUsedColors().size() == 5){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
         try{
             Player player = new Player(name);
             gameServices.addNewPlayer(player);
