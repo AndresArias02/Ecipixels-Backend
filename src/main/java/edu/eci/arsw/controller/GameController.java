@@ -14,7 +14,7 @@ import java.util.logging.Logger;
 
 @RestController
 @RequestMapping("/api/eciPixelsGame")
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "http://ecipixelsfront.azurewebsites.net")
 public class GameController {
 
     private final GameServices gameServices;
