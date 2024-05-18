@@ -180,7 +180,7 @@ public class Player implements Serializable {
         return values;
     }
 
-    private int foundLimits(Integer id, int r, int c, int minRow, int minCol, int maxRow, int maxCol, Integer[][] grid) {
+    private int foundLimits(int r, int c, int minRow, int minCol, int maxRow, int maxCol, Integer[][] grid) {
         int paso = 0;
         // Check right
         for (int c1 = c + 1; c1 <= maxCol; c1++) {
@@ -224,7 +224,7 @@ public class Player implements Serializable {
         for (int r = minRow; r <= maxRow; r++) {
             for (int c = minCol; c <= maxCol; c++) {
                 if (!grid[r][c].equals(id)) {
-                    int paso = foundLimits(this.id, r, c, minRow, minCol, maxRow, maxCol, grid);
+                    int paso = foundLimits(r, c, minRow, minCol, maxRow, maxCol, grid);
                     // If all four borders are found, paint the cell
                     if (paso == 4) {
                         String pixel = r + "," + c;
