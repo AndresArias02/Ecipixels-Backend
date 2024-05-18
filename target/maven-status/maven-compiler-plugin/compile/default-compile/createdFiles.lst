@@ -1,0 +1,14 @@
+edu/eci/arsw/EciPixelsApplication.class
+edu/eci/arsw/model/Head.class
+edu/eci/arsw/model/GameState.class
+edu/eci/arsw/configurations/RedisConfig.class
+edu/eci/arsw/service/GameServices.class
+edu/eci/arsw/repository/PlayerRepository.class
+edu/eci/arsw/repository/GameRepository.class
+edu/eci/arsw/service/BoardServices.class
+edu/eci/arsw/model/Player.class
+edu/eci/arsw/controller/WebSocketController.class
+edu/eci/arsw/service/PlayerServices.class
+edu/eci/arsw/model/Game.class
+edu/eci/arsw/configurations/WebSocketConfig.class
+edu/eci/arsw/controller/GameController.class

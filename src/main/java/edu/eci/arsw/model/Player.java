@@ -5,11 +5,12 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import edu.eci.arsw.service.GameServices;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.redis.core.RedisHash;
+
 import java.io.Serializable;
 import java.util.*;
 
 @RedisHash
-public class Player implements Serializable{
+public class Player implements Serializable {
     private Integer id;
     private String name;
     private Head head;
@@ -23,7 +24,7 @@ public class Player implements Serializable{
     private transient GameServices gameServices;
 
 
-    public Player(String name){
+    public Player(String name) {
         setId();
         this.name = name;
         this.head = null;
@@ -75,7 +76,7 @@ public class Player implements Serializable{
 
                 if (x != 0 && y != 0) {
                     Integer gridValue = game.getPixel(x, y); // Obtener el valor del tablero en esa posición
-                    checkIfPixelBelongsToSomeone(gridValue,routePixel,game); // Comprobar si el pixel ya esta ocupado por otro player
+                    checkIfPixelBelongsToSomeone(gridValue, routePixel, game); // Comprobar si el pixel ya esta ocupado por otro player
                     gameServices.updatePixelBoardGrid(routePixel, this.id); // Actualizar el pixel como nuevo pixel ganado en el área
                 }
             }
@@ -102,7 +103,7 @@ public class Player implements Serializable{
     private boolean killHimself() {
         String positionHead = head.getRow() + "," + head.getCol();
         Boolean killedHimself = false;
-        if(pixelsRoute.contains(positionHead)){
+        if (pixelsRoute.contains(positionHead)) {
             killedHimself = true;
         }
         return killedHimself;
@@ -111,15 +112,15 @@ public class Player implements Serializable{
 
     private void checkIfPlayerKilledAnother(String pixel) {
         Game game = gameServices.getGame();
-        List<Player>  players = gameServices.getPlayers();
+        List<Player> players = gameServices.getPlayers();
         List<Player> playersToRemove = new ArrayList<>();
-        for(Player p: players){
-           if(!p.equals(this) && p.getPixelsRoute() != null && p.getPixelsRoute().contains(pixel)){
-               playersToRemove.add(p);
-           }
+        for (Player p : players) {
+            if (!p.equals(this) && p.getPixelsRoute() != null && p.getPixelsRoute().contains(pixel)) {
+                playersToRemove.add(p);
+            }
         }
-        for(Player p: playersToRemove){
-            if(p!=this){
+        for (Player p : playersToRemove) {
+            if (p != this) {
                 p.setAlive(false);
                 p.getPixelsRoute().clear();
                 game.deletePlayer(p);
@@ -128,7 +129,7 @@ public class Player implements Serializable{
         }
     }
 
-    private synchronized void checkIfPixelBelongsToSomeone(Integer gridValue, String routePixel,Game game){
+    private synchronized void checkIfPixelBelongsToSomeone(Integer gridValue, String routePixel, Game game) {
         if (gridValue != 0) { // ¿Es el ID de otro jugador?
             Player player = gameServices.getPlayer(String.valueOf(gridValue));
             player.removePixel(routePixel);
@@ -147,15 +148,14 @@ public class Player implements Serializable{
     }
 
     public synchronized void removePixel(String p) {
-        if(pixelsOwned.contains(p)){
+        if (pixelsOwned.contains(p)) {
             pixelsOwned.remove(p);
         }
 
     }
 
-    private void calcArea(Game game) {
-        Integer[][] grid = gameServices.getBoard();
-
+    private List<Integer> calculateMinMaxRowsAndCols(Integer[][] grid) {
+        List<Integer> values = new ArrayList<>();
         // Calculate mins and maxs
         int minRow = Integer.MAX_VALUE;
         int minCol = Integer.MAX_VALUE;
@@ -173,59 +173,70 @@ public class Player implements Serializable{
                 }
             }
         }
+        values.add(minRow);
+        values.add(minCol);
+        values.add(maxRow);
+        values.add(maxCol);
+        return values;
+    }
 
+    private int foundLimits(Integer id, int r, int c, int minRow, int minCol, int maxRow, int maxCol, Integer[][] grid) {
+        int paso = 0;
+        // Check right
+        for (int c1 = c + 1; c1 <= maxCol; c1++) {
+            if (grid[r][c1].equals(this.id)) {
+                paso++;
+                break;
+            }
+        }
+        // Check left
+        for (int c1 = c - 1; c1 >= minCol; c1--) {
+            if (grid[r][c1].equals(this.id)) {
+                paso++;
+                break;
+            }
+        }
+        // Check down
+        for (int r1 = r + 1; r1 <= maxRow; r1++) {
+            if (grid[r1][c].equals(this.id)) {
+                paso++;
+                break;
+            }
+        }
+        // Check up
+        for (int r1 = r - 1; r1 >= minRow; r1--) {
+            if (grid[r1][c].equals(this.id)) {
+                paso++;
+                break;
+            }
+        }
+        return paso;
+    }
+
+
+    private void calcArea(Game game) {
+        Integer[][] grid = gameServices.getBoard();
+        int minRow = calculateMinMaxRowsAndCols(grid).get(0);
+        int minCol = calculateMinMaxRowsAndCols(grid).get(1);
+        int maxRow = calculateMinMaxRowsAndCols(grid).get(2);
+        int maxCol = calculateMinMaxRowsAndCols(grid).get(3);
         // Iterate over the area
         for (int r = minRow; r <= maxRow; r++) {
             for (int c = minCol; c <= maxCol; c++) {
                 if (!grid[r][c].equals(id)) {
-                    // Count the number of borders of the target color around the cell
-                    int paso = 0;
-
-                    // Check right
-                    for (int c1 = c + 1; c1 <= maxCol; c1++) {
-                        if (grid[r][c1].equals(this.id)) {
-                            paso++;
-                            break;
-                        }
-                    }
-
-                    // Check left
-                    for (int c1 = c - 1; c1 >= minCol; c1--) {
-                        if (grid[r][c1].equals(this.id)) {
-                            paso++;
-                            break;
-                        }
-                    }
-
-                    // Check down
-                    for (int r1 = r + 1; r1 <= maxRow; r1++) {
-                        if (grid[r1][c].equals(this.id)) {
-                            paso++;
-                            break;
-                        }
-                    }
-
-                    // Check up
-                    for (int r1 = r - 1; r1 >= minRow; r1--) {
-                        if (grid[r1][c].equals(this.id)) {
-                            paso++;
-                            break;
-                        }
-                    }
-
+                    int paso = foundLimits(this.id, r, c, minRow, minCol, maxRow, maxCol, grid);
                     // If all four borders are found, paint the cell
                     if (paso == 4) {
                         String pixel = r + "," + c;
                         Integer value = game.getPixel(r, c);
                         checkIfPixelBelongsToSomeone(value, pixel, game);
                         pixelsOwned.add(pixel);
-                        gameServices.updatePixelBoardGrid(pixel,this.id);
+                        gameServices.updatePixelBoardGrid(pixel, this.id);
                     }
                 }
             }
         }
     }
-
 
     public void setHead(Head head) {
         this.head = head;
@@ -235,7 +246,7 @@ public class Player implements Serializable{
         return this.head;
     }
 
-    public String getPlayerName(){
+    public String getPlayerName() {
         return this.name;
     }
 
@@ -243,11 +254,11 @@ public class Player implements Serializable{
         return color;
     }
 
-    public Integer getPlayerId(){
+    public Integer getPlayerId() {
         return this.id;
     }
 
-    public void setPlayerId(Integer id){
+    public void setPlayerId(Integer id) {
         this.id = id;
     }
 
@@ -287,7 +298,7 @@ public class Player implements Serializable{
         isAlive = alive;
     }
 
-    private void setId(){
+    private void setId() {
         UUID uuid = UUID.randomUUID();
         this.id = uuid.hashCode();
     }
