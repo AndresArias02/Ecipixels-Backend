@@ -19,7 +19,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         registry.addEndpoint("/game-socket")
-                .setAllowedOrigins("http://localhost:4200")
+                .setAllowedOrigins("http://ecipixelsfront.azurewebsites.net")
                 .withSockJS();
     }
 }
